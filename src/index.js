@@ -1,3 +1,4 @@
-import controller from './controllers/gameController';
+import Phaser from 'phaser';
+import config from './config/config';
 
-controller.init();
+let game = new Phaser.Game(config);

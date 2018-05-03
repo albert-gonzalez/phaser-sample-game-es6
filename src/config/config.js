@@ -1,4 +1,5 @@
-import Phaser from 'phaser/dist/phaser.min';
+import Phaser from 'phaser';
+import Game from '../scenes/game';
 
 export default {
   type: Phaser.AUTO,
@@ -8,7 +9,10 @@ export default {
     default: 'arcade',
     arcade: {
       gravity: { y: 300 },
-      debug: true
+      debug: false
     }
-  }
+  },
+  scene: [
+    Game
+  ]
 };
