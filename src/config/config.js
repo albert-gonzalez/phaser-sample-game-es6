@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import Game from '../scenes/game';
+import Title from '../scenes/title';
+import GameOver from '../scenes/gameOver';
 
 export default {
   type: Phaser.AUTO,
@@ -9,10 +11,12 @@ export default {
     default: 'arcade',
     arcade: {
       gravity: { y: 300 },
-      debug: false
+      debug: true
     }
   },
   scene: [
-    Game
+    Title,
+    Game,
+    GameOver
   ]
 };

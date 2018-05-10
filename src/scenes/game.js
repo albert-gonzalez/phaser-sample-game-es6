@@ -7,10 +7,9 @@ let score = 0;
 let scoreText;
 let bombs;
 let cursors;
-let gameOver;
 
 class Game extends Phaser.Scene {
-  constructor (test) {
+  constructor () {
     super({
       key: 'Game'
     });
@@ -28,6 +27,7 @@ class Game extends Phaser.Scene {
   }
 
   create () {
+    this.gameover = false;
     createBackground(this);
 
     platforms = createPlatforms(this);
@@ -57,15 +57,19 @@ class Game extends Phaser.Scene {
     if (cursors.up.isDown && player.body.touching.down) {
       player.setVelocityY(-500);
     }
+
+    if (this.gameover) {
+      this.scene.start('GameOver');
+    }
   }
 };
 
 function initPhysics ({player, platforms, stars, bombs, phaser}) {
   phaser.physics.add.collider(player, platforms);
   phaser.physics.add.collider(stars, platforms);
-  phaser.physics.add.overlap(player, stars, collectStar, null, this);
+  phaser.physics.add.overlap(player, stars, collectStar, null, phaser);
   phaser.physics.add.collider(bombs, platforms);
-  phaser.physics.add.collider(player, bombs, hitBomb, null, this);
+  phaser.physics.add.collider(player, bombs, hitBomb, null, phaser);
 }
 
 function createStars (phaser) {
@@ -169,7 +173,7 @@ function hitBomb (player, bomb) {
   this.physics.pause();
   player.setTint(0xde0000);
   player.anims.play('turn');
-  gameOver = true;
+  this.gameover = true;
 }
 
 export default Game;
