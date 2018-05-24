@@ -29,13 +29,13 @@ class Game extends Phaser.Scene {
   create () {
     this.gameover = false;
     createBackground(this);
-
     platforms = createPlatforms(this);
     player = createPlayer(this);
     stars = createStars(this);
     bombs = this.physics.add.group();
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     initPhysics({bombs, player, platforms, stars, phaser: this});
+    createBomb(player);
   }
 
   update () {
@@ -59,10 +59,17 @@ class Game extends Phaser.Scene {
     }
 
     if (this.gameover) {
-      this.scene.start('GameOver');
+      setTimeout(() => goToGameOver(this), 1000);
+      this.scene.pause();
     }
   }
 };
+
+function goToGameOver (phaser) {
+  phaser.scene.destroy();
+  phaser.physics.destroy();
+  phaser.scene.start('GameOver');
+}
 
 function initPhysics ({player, platforms, stars, bombs, phaser}) {
   phaser.physics.add.collider(player, platforms);
@@ -170,7 +177,6 @@ function showStars (stars) {
 }
 
 function hitBomb (player, bomb) {
-  this.physics.pause();
   player.setTint(0xde0000);
   player.anims.play('turn');
   this.gameover = true;
