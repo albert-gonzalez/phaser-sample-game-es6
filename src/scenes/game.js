@@ -16,6 +16,7 @@ class Game extends Phaser.Scene {
   }
 
   preload () {
+    console.log('preload');
     this.load.image('sky', 'src/assets/sky.png');
     this.load.image('ground', 'src/assets/platform.png');
     this.load.image('star', 'src/assets/star.png');
@@ -48,8 +49,6 @@ class Game extends Phaser.Scene {
 };
 
 function goToGameOver (phaser) {
-  phaser.scene.destroy();
-  phaser.physics.destroy();
   phaser.scene.start('GameOver');
 }
 
