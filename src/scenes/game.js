@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Hero from '../components/characters/hero/hero';
 
 let platforms;
 let player;
@@ -6,7 +7,6 @@ let stars;
 let score = 0;
 let scoreText;
 let bombs;
-let cursors;
 
 class Game extends Phaser.Scene {
   constructor () {
@@ -20,10 +20,8 @@ class Game extends Phaser.Scene {
     this.load.image('ground', 'src/assets/platform.png');
     this.load.image('star', 'src/assets/star.png');
     this.load.image('bomb', 'src/assets/bomb.png');
-    this.load.spritesheet('dude',
-      'src/assets/dude.png',
-      { frameWidth: 32, frameHeight: 48 }
-    );
+
+    Hero.preload(this);
   }
 
   create () {
@@ -36,27 +34,11 @@ class Game extends Phaser.Scene {
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     initPhysics({bombs, player, platforms, stars, phaser: this});
     createBomb(player);
+    Hero.initAnimations(this);
   }
 
   update () {
-    cursors = this.input.keyboard.createCursorKeys();
-
-    if (cursors.left.isDown) {
-      player.setVelocityX(-160);
-
-      player.anims.play('left', true);
-    } else if (cursors.right.isDown) {
-      player.setVelocityX(160);
-
-      player.anims.play('right', true);
-    } else {
-      player.setVelocityX(0);
-      player.anims.play('turn');
-    }
-
-    if (cursors.up.isDown && player.body.touching.down) {
-      player.setVelocityY(-500);
-    }
+    player.update();
 
     if (this.gameover) {
       setTimeout(() => goToGameOver(this), 1000);
@@ -93,33 +75,9 @@ function createStars (phaser) {
 }
 
 function createPlayer (phaser) {
-  let player = phaser.physics.add.sprite(100, 450, 'dude');
-  player.setBounce(0.2);
-  player.setCollideWorldBounds(true);
-  initAnimations(phaser);
-  player.body.setGravityY(300);
+  let player = new Hero({scene: phaser, x: 100, y: 450});
 
   return player;
-}
-
-function initAnimations (phaser) {
-  phaser.anims.create({
-    key: 'left',
-    frames: phaser.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-    frameRate: 10,
-    repeat: -1
-  });
-  phaser.anims.create({
-    key: 'turn',
-    frames: [{ key: 'dude', frame: 4 }],
-    frameRate: 20
-  });
-  phaser.anims.create({
-    key: 'right',
-    frames: phaser.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-    frameRate: 10,
-    repeat: -1
-  });
 }
 
 function createBackground (phaser) {
