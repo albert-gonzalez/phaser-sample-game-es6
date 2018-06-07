@@ -30,6 +30,7 @@ class Game extends Phaser.Scene {
   create () {
     this.gameover = false;
     createBackground(this);
+    score = 0;
     platforms = createPlatforms(this);
     player = createPlayer(this);
     stars = createStars(this);
