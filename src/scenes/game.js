@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Hero from '../components/characters/hero/hero';
+import Stars from '../components/items/stars/stars';
 
 let platforms;
 let player;
@@ -18,10 +19,10 @@ class Game extends Phaser.Scene {
   preload () {
     this.load.image('sky', 'src/assets/sky.png');
     this.load.image('ground', 'src/assets/platform.png');
-    this.load.image('star', 'src/assets/star.png');
     this.load.image('bomb', 'src/assets/bomb.png');
 
     Hero.preload(this);
+    Stars.preload(this);
   }
 
   create () {
@@ -52,23 +53,19 @@ function goToGameOver (phaser) {
 
 function initPhysics ({player, platforms, stars, bombs, phaser}) {
   phaser.physics.add.collider(player, platforms);
-  phaser.physics.add.collider(stars, platforms);
-  phaser.physics.add.overlap(player, stars, collectStar, null, phaser);
+  phaser.physics.add.collider(stars.getGroup(), platforms);
+  phaser.physics.add.overlap(player, stars.getGroup(), collectStar, null, phaser);
   phaser.physics.add.collider(bombs, platforms);
   phaser.physics.add.collider(player, bombs, hitBomb, null, phaser);
 }
 
 function createStars (phaser) {
-  let stars = phaser.physics.add.group({
+  return new Stars({
+    scene: phaser,
     key: 'star',
     repeat: 11,
     setXY: { x: 12, y: 0, stepX: 70 }
   });
-  stars.children.iterate(function (child) {
-    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-  });
-
-  return stars;
 }
 
 function createPlayer (phaser) {
@@ -104,7 +101,7 @@ function collectStar (player, star) {
 }
 
 function levelCompleted () {
-  return stars.countActive(true) === 0;
+  return stars.countActive() === 0;
 }
 
 function hideStar (star) {
@@ -126,9 +123,7 @@ function createBomb (player) {
 }
 
 function showStars (stars) {
-  stars.children.iterate(function (child) {
-    child.enableBody(true, child.x, 0, true, true);
-  });
+  stars.show();
 }
 
 function hitBomb (player, bomb) {
