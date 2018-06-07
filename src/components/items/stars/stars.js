@@ -9,9 +9,8 @@ class Stars {
   }
 
   static preload (scene) {
-    scene.load.spritesheet(STAR_KEY,
-      STAR_SPRITE_PATH,
-      { frameWidth: 32, frameHeight: 48 }
+    scene.load.image(STAR_KEY,
+      STAR_SPRITE_PATH
     );
   }
 

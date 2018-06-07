@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import Hero from '../components/characters/hero/hero';
 import Stars from '../components/items/stars/stars';
+import Platforms from '../components/scene/platforms/platforms';
+import Background from '../components/scene/background/background';
 
 let platforms;
 let player;
@@ -17,12 +19,12 @@ class Game extends Phaser.Scene {
   }
 
   preload () {
-    this.load.image('sky', 'src/assets/sky.png');
-    this.load.image('ground', 'src/assets/platform.png');
     this.load.image('bomb', 'src/assets/bomb.png');
 
+    Background.preload(this);
     Hero.preload(this);
     Stars.preload(this);
+    Platforms.preload(this);
   }
 
   create () {
@@ -52,10 +54,10 @@ function goToGameOver (phaser) {
 }
 
 function initPhysics ({player, platforms, stars, bombs, phaser}) {
-  phaser.physics.add.collider(player, platforms);
-  phaser.physics.add.collider(stars.getGroup(), platforms);
+  phaser.physics.add.collider(player, platforms.getGroup());
+  phaser.physics.add.collider(stars.getGroup(), platforms.getGroup());
   phaser.physics.add.overlap(player, stars.getGroup(), collectStar, null, phaser);
-  phaser.physics.add.collider(bombs, platforms);
+  phaser.physics.add.collider(bombs, platforms.getGroup());
   phaser.physics.add.collider(player, bombs, hitBomb, null, phaser);
 }
 
@@ -75,17 +77,25 @@ function createPlayer (phaser) {
 }
 
 function createBackground (phaser) {
-  phaser.add.image(400, 300, 'sky');
+  return new Background({
+    scene: phaser,
+    x: 400,
+    y: 300
+  });
 }
 
 function createPlatforms (phaser) {
   let platforms;
 
-  platforms = phaser.physics.add.staticGroup();
-  platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-  platforms.create(600, 400, 'ground');
-  platforms.create(50, 250, 'ground');
-  platforms.create(750, 220, 'ground');
+  platforms = new Platforms({
+    scene: phaser,
+    positions: [
+      {x: 400, y: 568, scale: 2},
+      {x: 600, y: 400},
+      {x: 50, y: 250},
+      {x: 750, y: 220}
+    ]
+  });
 
   return platforms;
 }
