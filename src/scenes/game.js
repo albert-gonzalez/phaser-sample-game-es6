@@ -3,6 +3,7 @@ import Hero from '../components/characters/hero/hero';
 import Stars from '../components/items/stars/stars';
 import Platforms from '../components/scene/platforms/platforms';
 import Background from '../components/scene/background/background';
+import Bombs from '../components/enemies/bombs/bombs';
 
 let platforms;
 let player;
@@ -19,8 +20,7 @@ class Game extends Phaser.Scene {
   }
 
   preload () {
-    this.load.image('bomb', 'src/assets/bomb.png');
-
+    Bombs.preload(this);
     Background.preload(this);
     Hero.preload(this);
     Stars.preload(this);
@@ -33,7 +33,7 @@ class Game extends Phaser.Scene {
     platforms = createPlatforms(this);
     player = createPlayer(this);
     stars = createStars(this);
-    bombs = this.physics.add.group();
+    bombs = new Bombs({ scene: this });
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     initPhysics({bombs, player, platforms, stars, phaser: this});
     createBomb(player);
@@ -57,8 +57,8 @@ function initPhysics ({player, platforms, stars, bombs, phaser}) {
   phaser.physics.add.collider(player, platforms.getGroup());
   phaser.physics.add.collider(stars.getGroup(), platforms.getGroup());
   phaser.physics.add.overlap(player, stars.getGroup(), collectStar, null, phaser);
-  phaser.physics.add.collider(bombs, platforms.getGroup());
-  phaser.physics.add.collider(player, bombs, hitBomb, null, phaser);
+  phaser.physics.add.collider(bombs.getGroup(), platforms.getGroup());
+  phaser.physics.add.collider(player, bombs.getGroup(), hitBomb, null, phaser);
 }
 
 function createStars (phaser) {
@@ -125,11 +125,7 @@ function updateScore () {
 
 function createBomb (player) {
   var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-  var bomb = bombs.create(x, 16, 'bomb');
-  bomb.setBounce(1);
-  bomb.setCollideWorldBounds(true);
-  bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-  bomb.allowGravity = false;
+  bombs.create({ x, y: 16 });
 }
 
 function showStars (stars) {
