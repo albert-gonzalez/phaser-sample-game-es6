@@ -16,7 +16,6 @@ class Game extends Phaser.Scene {
   }
 
   preload () {
-    console.log('preload');
     this.load.image('sky', 'src/assets/sky.png');
     this.load.image('ground', 'src/assets/platform.png');
     this.load.image('star', 'src/assets/star.png');
@@ -35,7 +34,6 @@ class Game extends Phaser.Scene {
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
     initPhysics({bombs, player, platforms, stars, phaser: this});
     createBomb(player);
-    Hero.initAnimations(this);
   }
 
   update () {

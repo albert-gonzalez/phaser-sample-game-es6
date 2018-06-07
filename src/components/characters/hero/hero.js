@@ -9,6 +9,7 @@ const TURN_ANIMATION = 'turn';
 class Hero extends Phaser.GameObjects.Sprite {
   constructor (config) {
     super(config.scene, config.x, config.y, HERO_KEY);
+    this.initAnimations(config.scene);
     this.initPlayer(config.scene);
   }
 
@@ -46,7 +47,7 @@ class Hero extends Phaser.GameObjects.Sprite {
     this.anims.play(TURN_ANIMATION, true);
   }
 
-  static initAnimations (scene) {
+  initAnimations (scene) {
     scene.anims.create({
       key: LEFT_ANIMATION,
       frames: scene.anims.generateFrameNumbers(HERO_KEY, { start: 0, end: 3 }),
