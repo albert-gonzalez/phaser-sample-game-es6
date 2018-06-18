@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import sprite from '../../../assets/star.png';
 
 const STAR_KEY = 'star';
-const STAR_SPRITE_PATH = 'src/assets/star.png';
 
 class Stars {
   constructor (config) {
@@ -10,7 +10,7 @@ class Stars {
 
   static preload (scene) {
     scene.load.image(STAR_KEY,
-      STAR_SPRITE_PATH
+      sprite
     );
   }
 

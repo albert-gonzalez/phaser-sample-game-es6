@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import sprite from '../../../assets/dude.png';
 
 const HERO_KEY = 'hero';
-const HERO_SPRITE_PATH = 'src/assets/dude.png';
 const LEFT_ANIMATION = 'left';
 const RIGHT_ANIMATION = 'right';
 const TURN_ANIMATION = 'turn';
@@ -15,7 +15,7 @@ class Hero extends Phaser.GameObjects.Sprite {
 
   static preload (scene) {
     scene.load.spritesheet(HERO_KEY,
-      HERO_SPRITE_PATH,
+      sprite,
       { frameWidth: 32, frameHeight: 48 }
     );
   }

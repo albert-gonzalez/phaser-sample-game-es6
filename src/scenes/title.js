@@ -26,7 +26,7 @@ class Title extends Phaser.Scene {
 
   addTextToTheScene () {
     createText({
-      label: 'Arkanoid',
+      label: 'ES6 Game',
       x: config.width / 2,
       y: config.height * 0.20,
       fill: '#FE0',

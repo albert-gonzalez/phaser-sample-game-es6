@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import sprite from '../../../assets/bomb.png';
 
 const BOMB_KEY = 'bomb';
-const BOMB_SPRITE_PATH = 'src/assets/bomb.png';
 
 class Bombs {
   constructor (config) {
@@ -10,7 +10,7 @@ class Bombs {
 
   static preload (scene) {
     scene.load.image(BOMB_KEY,
-      BOMB_SPRITE_PATH
+      sprite
     );
   }
 

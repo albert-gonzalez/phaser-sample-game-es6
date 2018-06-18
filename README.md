@@ -1,1 +1,1 @@
-# Arkanoid Project
+# Phaser Sample Game in ES6

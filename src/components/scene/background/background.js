@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import sprite from '../../../assets/sky.png';
 
 const BACKGROUND_KEY = 'background';
-const BACKGROUND_SPRITE_PATH = 'src/assets/sky.png';
 
 class Background extends Phaser.GameObjects.Image {
   constructor (config) {
@@ -11,7 +11,7 @@ class Background extends Phaser.GameObjects.Image {
 
   static preload (scene) {
     scene.load.image(BACKGROUND_KEY,
-      BACKGROUND_SPRITE_PATH
+      sprite
     );
   }
 }

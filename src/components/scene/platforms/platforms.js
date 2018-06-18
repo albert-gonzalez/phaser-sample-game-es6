@@ -1,5 +1,6 @@
+import sprite from '../../../assets/platform.png';
+
 const PLATFORM_KEY = 'ground';
-const PLATFORM_SPRITE_PATH = 'src/assets/platform.png';
 
 class Platforms {
   constructor (config) {
@@ -8,7 +9,7 @@ class Platforms {
 
   static preload (scene) {
     scene.load.image(PLATFORM_KEY,
-      PLATFORM_SPRITE_PATH
+      sprite
     );
   }
 
